@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/dragon_curve
+dragon_curve.so
+dragon_curve.dylib
+dragon_curve.dll
+dragon_curve.a
+dragon_curve.lib
+dragon_curve-test-*
+*.exe
+*.o
+*.obj
+*.lst

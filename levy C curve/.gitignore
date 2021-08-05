@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/levy_c_curve
+levy_c_curve.so
+levy_c_curve.dylib
+levy_c_curve.dll
+levy_c_curve.a
+levy_c_curve.lib
+levy_c_curve-test-*
+*.exe
+*.o
+*.obj
+*.lst

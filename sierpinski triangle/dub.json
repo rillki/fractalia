@@ -1,0 +1,28 @@
+{
+	"authors": [
+		"rillk500"
+	],
+	"copyright": "no copyright",
+	"targetPath": "bin",
+    "dependencies": {
+        "raylib-d": "~>3.0.4"
+    },
+    "lflags": [
+        "-framework",
+        "CoreVideo",
+        "-framework",
+        "IOKit",
+        "-framework",
+        "Cocoa",
+        "-framework",
+        "GLUT",
+        "-framework",
+        "OpenGL"
+    ],
+    "libs": [
+        "raylib"
+    ],
+	"description": "A minimal D application.",
+	"license": "no license",
+	"name": "sierpinski"
+}
