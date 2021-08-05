@@ -1,2 +1,2 @@
-# fractalia
+# Fractalia
 Fractals Visualization
