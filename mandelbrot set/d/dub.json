@@ -9,9 +9,12 @@
 	},
 	"configurations": [
 		{
-			"name": "app",
+			"name": "osx-app",
 			"platforms": ["osx"],
 			"targetType": "executable",
+			"libs": [
+				"raylib"
+			],
 			"lflags": [
 				"-framework",
 				"IOKit",
@@ -22,14 +25,21 @@
 			],
 		},
 		{
-			"name": "app",
+			"name": "linux-app",
 			"platforms": ["linux"],
 			"targetType": "executable",
+			"libs": [
+				"raylib",
+				"GL",
+				"m",
+				"pthread",
+				"dl",
+				"rt",
+				"X11"
+			],
 		},
 	],
-	"libs": [
-		"raylib"
-	],
+	
 	"description": "Mandelbrot Fractal (zoom in/out)",
 	"license": "MIT",
 	"name": "app"
