@@ -1,26 +1,43 @@
 {
 	"authors": [
-		"rillk500"
-	],
-	"copyright": "no copyright",
-    "targetPath": "bin",
-    "dependencies": {
-        "raylib-d": "~>3.0.4"
-    },
-    "lflags": [
-        "-framework",
-        "CoreVideo",
-        "-framework",
-        "IOKit",
-        "-framework",
-        "Cocoa",
-        "-framework",
-        "GLUT",
-        "-framework",
-        "OpenGL"
+        "rillki"
     ],
-    "libs": [
-        "raylib"
+    "targetPath": "bin",
+    "copyright": "Copyright © 2021, rillki",
+    "dependencies": {
+        "raylib-d": "~>3.1.0"
+    },
+    "configurations": [
+        {
+            "name": "osx-app",
+            "platforms": ["osx"],
+            "targetType": "executable",
+            "libs": [
+                "raylib"
+            ],
+            "lflags": [
+                "-framework",
+                "IOKit",
+                "-framework",
+                "Cocoa",
+                "-framework",
+                "OpenGL"
+            ],
+        },
+        {
+            "name": "linux-app",
+            "platforms": ["linux"],
+            "targetType": "executable",
+            "libs": [
+                "raylib",
+                "GL",
+                "m",
+                "pthread",
+                "dl",
+                "rt",
+                "X11"
+            ],
+        },
     ],
 	"description": "Dragon Curve Fractal",
 	"license": "no license",
