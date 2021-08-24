@@ -1,109 +1,185 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <math.h>
 
 #include "raylib.h"
 
-// NOTE: make render dimensions larger that window dimensions, then draw the pixels within the window only
+const int windowWidth = 1080;
+const int windowHeight = 720;
+const int windowFPS = 60;
 
-#define WIDTH 720
-#define HEIGHT 720
-#define FPS 60
+const int renderWidth = windowWidth*4;
+const int renderHeight = windowWidth*4;
 
-#define MIN_BOUND -2
-#define MAX_BOUND 2
-#define MAX_ITERS 100
-#define ITER_FACTOR 5
-#define SCALE_FACTOR 1.5
-#define OFFSET_FACTOR 30
+const float boundMin = -8.0;
+const float boundMax = 8.0;
+const float boundScalingFactor = 1.05;
 
-long double map(long double x, long double inMin, long double inMax, long double outMin, long double outMax);
+const int iterMax = 100;
+const int iterDelta = 5;
+const int offsetFactor = 30;
+
+// complex number
+typedef struct cldouble {
+	long double re;
+	long double im;
+} cldouble;
+
+inline long double map(long double x, long double xRangeMin, long double xRangeMax, long double outRangeMin, long double outRangeMax);
+inline Color calc_color(int seed);
 
 int main(void) {
-    // variables for zooming in/out of mandelbrot set (perspective)
-    double minBound = MIN_BOUND;
-    double maxBound = MAX_BOUND;
-    int maxIters = MAX_ITERS;
-    int offsetX = 0;
-    int offsetY= 0;
+	float boundMinSlider = boundMin;
+	float boundMaxSlider = boundMax;
+	int iterSlider = iterMax;
+	int offsetX = -renderWidth/3;
+	int offsetY = -renderHeight/2.4;
 
-    InitWindow(WIDTH, HEIGHT, "Mandelbrot Set");
-    SetTargetFPS(FPS);
+	// window init
+	InitWindow(windowWidth, windowHeight, "Mandelbrot Set");
+	SetTargetFPS(windowFPS);
 
-    while(!WindowShouldClose()) {
-        // event processing
-        if(IsKeyPressed(KEY_Z)) { // zoom in
-            minBound *= SCALE_FACTOR;
-            maxBound *= SCALE_FACTOR;
-            maxIters += ITER_FACTOR;
-        } else if(IsKeyPressed(KEY_X)) { // zoom out
-            minBound /= SCALE_FACTOR;
-            maxBound /= SCALE_FACTOR;
-            maxIters -= ITER_FACTOR;
-        } else if(IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP)) { // move up
-            offsetY -= OFFSET_FACTOR;
-        } else if(IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN)) { // move down
-            offsetY += OFFSET_FACTOR;
-        } else if(IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT)) { // move left
-            offsetX -= OFFSET_FACTOR;
-        } else if(IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT)) { // move right
-            offsetX += OFFSET_FACTOR;
-        } else if(IsKeyPressed(KEY_R)) { // reset
-            minBound = MIN_BOUND;
-            maxBound = MAX_BOUND;
-            maxIters = MAX_ITERS;
-            offsetX = offsetY = 0;
-        }
-        
-        
-        // rendering
-        BeginDrawing();
-        ClearBackground(BLACK);
-        
-        for(int x = 0; x < WIDTH; x++) {
-            for(int y = 0; y < HEIGHT; y++) {
-                long double xc = map(x, 0, WIDTH, minBound, maxBound);
-                long double yc = map(y, 0, HEIGHT, minBound, maxBound);
-                
-                long double xi = xc;
-                long double yi = yc;
-                
-                int iters = 0;
-                for(int i = 0; i < maxIters; i++) {
-                    long double x2 = xc * xc - yc * yc;
-                    long double y2 = 2 * xc * yc;
-                    
-                    xc = x2 + xi;
-                    yc = y2 + yi;
-                    
-                    if(xc + yc > maxBound) {
-                        break;
-                    }
-                    
-                    iters++;
-                }
-                
-                int pixelColor = map(iters, 0, maxIters, 0, 255);
-                if(iters == maxIters) {
-                    pixelColor = 0;
-                }
-                
-                int r = pixelColor;
-                int g = map(pixelColor*pixelColor, 0, 255*255, 0, 255);
-                int b = map(pixelColor*0.5, 0, 255*0.5, 0, 255);
-                
-                DrawPixel(x + offsetX, y + offsetY, (Color) { r, g, b, 255 });
-            }
-        }
-        
-        DrawFPS(0.01 * WIDTH, 0.01 * WIDTH);
-        EndDrawing();
-    }
+	// main loop
+	while(!WindowShouldClose()) {
+		// process events
+		if(IsKeyDown(KEY_Q)) {
+			// increase min bound
+			boundMinSlider *= boundScalingFactor;
+		} else if(IsKeyDown(KEY_A)) {
+			// decrease min bound
+			boundMinSlider /= boundScalingFactor;
+		} else if(IsKeyDown(KEY_W)) {
+			// increase max bound
+			boundMaxSlider *= boundScalingFactor;
+		} else if(IsKeyDown(KEY_S)) {
+			// increase max bound
+			boundMaxSlider /= boundScalingFactor;
+		} else if(IsKeyDown(KEY_E)) {
+			// increase iterSlider (iterations)
+			iterSlider += iterDelta;
+		} else if(IsKeyDown(KEY_D)) {
+			// decrease iterSlider (iterations)
+			iterSlider -= iterDelta;
+		}
 
-    CloseWindow();
+		if(IsKeyDown(KEY_UP)) {
+			// change Y offset (move up)
+			offsetY += offsetFactor;
+		} else if(IsKeyDown(KEY_DOWN)) {
+			// change Y offset (move down)
+			offsetY -= offsetFactor;
+		} else if(IsKeyDown(KEY_LEFT)) {
+			// change X offset (move left)
+			offsetX += offsetFactor;
+		} else if(IsKeyDown(KEY_RIGHT)) {
+			// change X offset (move right)
+			offsetX -= offsetFactor;
+		} else if(IsKeyDown(KEY_R)) {
+			// reset to defaults
+			boundMinSlider = boundMin;
+			boundMaxSlider = boundMax;
+			iterSlider = iterMax;
+			offsetX = -renderWidth/3;
+			offsetY = -renderHeight/2.4;
+		}
 
-    return 0;
+		// render
+		BeginDrawing();
+		ClearBackground(BLACK);
+
+		// iterate through each pixel
+		for(int x = 0; x < renderWidth; x++) {
+			// if pixel is not within the window dimensions, skip the iteration
+			if(x + offsetX < 0 || x + offsetX > windowWidth) {
+				continue;
+			}
+
+			for(int y = 0; y < renderHeight; y++) {
+				// if pixel is not within the window dimensions, skip the iteration
+				if(y + offsetY < 0 || y + offsetY > windowHeight) {
+					continue;
+				}
+
+				// mapping x and y coord to complex plane coord in range(boundMinSlider, boundMaxSlider)
+				cldouble z = {
+					.re = map(x, 0, renderWidth, boundMinSlider, boundMaxSlider),
+					.im = map(y, 0, renderHeight, boundMinSlider, boundMaxSlider),
+				};
+
+				// save the initial z value
+				cldouble zi = z;
+				
+				int n = 0;
+				for(; n < iterSlider; n++) {
+					// calculate new z
+					z = (cldouble) {
+						.re = z.re * z.re - z.im * z.im + zi.re,
+						.im = 2 * z.re * z.im + zi.im,
+					};
+					
+					if(fabsl(z.re + z.im) > boundMaxSlider) {
+						break;
+					}
+				}
+
+				DrawPixel(x + offsetX, y + offsetY, calc_color(n == iterSlider ? 0 : map(n, 0, iterSlider, 0, 255)));
+			}
+		}
+
+		DrawFPS(10, 10);
+		{
+			char str[100];
+			snprintf(str, sizeof(str), "boundMinSlider:  %.3f", boundMinSlider);
+			DrawText(str, 10, 60, 21, WHITE);
+
+			snprintf(str, sizeof(str), "boundMaxSlider: %.3f", boundMaxSlider);
+			DrawText(str, 10, 90, 21, WHITE);
+
+			snprintf(str, sizeof(str), "iterSlider: %i", iterSlider);
+			DrawText(str, 10, 120, 21, WHITE);
+		}
+		EndDrawing();
+	}
+
+	return 0;
 }
 
-long double map(long double x, long double inMin, long double inMax, long double outMin, long double outMax) {
-    return ((x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin);
+inline long double map(long double x, long double xRangeMin, long double xRangeMax, long double outRangeMin, long double outRangeMax) {
+	return ((x - xRangeMin) * (outRangeMax - outRangeMin) / (xRangeMax - xRangeMin) + outRangeMin);
 }
+
+inline Color calc_color(int seed) {
+	return (Color) {
+		.r = map(sqrt(seed), 0, sqrt(255), 0, 255),
+		.g = map(seed*seed, 0, 255*255, 0, 255),
+		.b = map(seed*0.5, 0, 255*0.5, 0, 255),
+		.a = 255
+	};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
