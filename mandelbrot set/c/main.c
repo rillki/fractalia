@@ -37,7 +37,7 @@ int main(void) {
 	int offsetY = -renderHeight/2.4;
 
 	// window init
-	InitWindow(windowWidth, windowHeight, "Mandelbrot Set");
+	InitWindow(windowWidth, windowHeight, "Mandelbrot Fractal");
 	SetTargetFPS(windowFPS);
 
 	// main loop

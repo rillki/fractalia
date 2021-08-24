@@ -1,5 +1,6 @@
 # custom
 bin/
+.DS_Store
 
 # Compiled Object files
 *.o

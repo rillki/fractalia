@@ -1,0 +1,36 @@
+{
+	"authors": [
+		"rillki"
+	],
+	"targetPath": "bin",
+	"copyright": "Copyright © 2021, rillki",
+	"dependencies": {
+		"raylib-d": "~>3.1.0"
+	},
+	"configurations": [
+		{
+			"name": "app",
+			"platforms": ["osx"],
+			"targetType": "executable",
+			"lflags": [
+				"-framework",
+				"IOKit",
+				"-framework",
+				"Cocoa",
+				"-framework",
+				"OpenGL"
+			],
+		},
+		{
+			"name": "app",
+			"platforms": ["linux"],
+			"targetType": "executable",
+		},
+	],
+	"libs": [
+		"raylib"
+	],
+	"description": "Mandelbrot Fractal (zoom in/out)",
+	"license": "MIT",
+	"name": "app"
+}
