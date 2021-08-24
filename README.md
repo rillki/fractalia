@@ -1,11 +1,18 @@
 # Fractalia
 Fractals Visualization
 
-### Contents
-* Sierpinski Triangle
-* Koch Curve (snowflake)
+## Contents
+### Sierpinski Triangle
+<img src="imgs/sierpinski.jpeg">
+
+### Koch Curve (snowflake)
+<img src="imgs/koch.jpeg">
+
 * Dragon Curve (+ interactive mode [zoom in/out])
+<img src="imgs/dragon.jpeg">
+
 * Mandelbrot Fractal (+ interactive mode [zoom in/out])
+<img src="imgs/mandelbrot.jpeg">
 
 ### How to compile
 To compile the code, you'll need two things:
