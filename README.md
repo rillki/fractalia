@@ -14,7 +14,10 @@ Fractals Visualization
 * Mandelbrot Fractal (+ interactive mode [zoom in/out])
 <img src="imgs/mandelbrot.jpg">
 
-### How to compile
+## Dependencies
+* [Raylib](https://www.raylib.com/)
+
+## How to compile
 To compile the code, you'll need two things:
 1. [D compiler](https://dlang.org/download.html) (DMD/LDC is recommended)
 2. [DUB](https://dub.pm/) package manager 
@@ -22,8 +25,8 @@ To compile the code, you'll need two things:
 Then
 ```
 git clone https://github.com/rillki/fractalia.git
-cd 'fractalia/dragon curve' (choose a folder)
-dub
+cd 'fractalia/dragon curve' (choose a fractal)
+dub --build=release
 ```
 Dub fetches the required packages, compiles and runs the executable.
 
