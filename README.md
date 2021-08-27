@@ -17,12 +17,16 @@ Fractals Visualization
 ## Dependencies
 * [Raylib](https://www.raylib.com/)
 
-## How to compile
+## Requirements
 To compile the code, you'll need two things:
 1. [D compiler](https://dlang.org/download.html) (DMD/LDC is recommended)
 2. [DUB](https://dub.pm/) package manager 
 
-Then
+For Windows users: 
+3. download `raylib` pre-compiled (binaries)[https://github.com/raysan5/raylib/releases] as well.
+4. copy `raylib.dll` and `raylibdll.lib` into you project's folder (into the same directory as `dub.json`)
+
+## How to compile
 ```
 git clone https://github.com/rillki/fractalia.git
 cd 'fractalia/dragon curve' (choose a fractal)
