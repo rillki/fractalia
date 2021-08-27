@@ -38,6 +38,14 @@
 				"X11"
 			],
 		},
+		{
+			"name": "windows-app",
+			"platforms": ["windows"],
+			"targetType": "executable",
+			"libs": [
+				"raylibdll"
+			],
+		},
 	],
 	"description": "Mandelbrot Fractal (zoom in/out)",
 	"license": "MIT",
