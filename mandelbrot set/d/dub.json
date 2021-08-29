@@ -2,8 +2,8 @@
 	"authors": [
 		"rillki"
 	],
-	"targetPath": "bin",
 	"copyright": "Copyright © 2021, rillki",
+	"targetPath": "bin",
 	"dependencies": {
 		"raylib-d": "~>3.1.0"
 	},
@@ -47,7 +47,7 @@
 			],
 		},
 	],
-	"description": "Mandelbrot Fractal (zoom in/out)",
+	"description": "D/Raylib minimal setup",
 	"license": "MIT",
-	"name": "app"
+	"name": "d-raylib-project-template"
 }
