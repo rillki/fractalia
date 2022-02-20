@@ -1,37 +1,47 @@
 module app;
 
+import raylib;
 import std.conv: to;
 import std.string: toStringz;
 import std.complex: complex, Complex;
 import core.stdc.math: fabs, sqrt;
 
-import raylib;
+// window
+immutable fps = 60;
+immutable width = 1080;
+immutable height = 720;
 
-immutable windowWidth = 1080;
-immutable windowHeight = 720;
-immutable windowFPS = 60;
+// our render field
+immutable renderWidth = width*4;
+immutable renderHeight = width*4;
 
-immutable renderWidth = windowWidth*4;
-immutable renderHeight = windowWidth*4;
-
+// for zoooming
 immutable boundMin = -8.0;
 immutable boundMax = 8.0;
 immutable boundScalingFactor = 1.05;
 
+// precision
 immutable iterMax = 100;
 immutable iterDelta = 5;
+
+// movement speed
 immutable offsetFactor = 30;
+immutable defaultOffsetX = (-renderWidth/3).to!int;
+immutable defaultOffsetY = (-renderHeight/2.4).to!int;
 
 void main() {
+	// precision and offsets (centering the Madelbrot fractal)
+	int iterSlider = iterMax;
+	int offsetX = defaultOffsetX;
+	int offsetY = defaultOffsetY;
+
+	// zoom slizders
 	float boundMinSlider = boundMin;
 	float boundMaxSlider = boundMax;
-	int iterSlider = iterMax;
-	int offsetX = (-renderWidth/3).to!int;
-	int offsetY = (-renderHeight/2.4).to!int;
 
 	// window init
-	InitWindow(windowWidth, windowHeight, "Mandelbrot Fractal");
-	SetTargetFPS(windowFPS);
+	InitWindow(width, height, "Mandelbrot Fractal");
+	SetTargetFPS(fps);
 
 	// main loop
 	while(!WindowShouldClose()) {
@@ -73,8 +83,8 @@ void main() {
 			boundMinSlider = boundMin;
 			boundMaxSlider = boundMax;
 			iterSlider = iterMax;
-			offsetX = (-renderWidth/3).to!int;
-			offsetY = (-renderHeight/2.4).to!int;
+			offsetX = defaultOffsetX;
+			offsetY = defaultOffsetY;
 		}
 
 		// render
@@ -82,15 +92,17 @@ void main() {
 		ClearBackground(Colors.BLACK);
 
 		// iterate through each pixel
-		for(int x = 0; x < renderWidth; x++) {
-			// if pixel is not within the window dimensions, skip the iteration
-			if(x + offsetX < 0 || x + offsetX > windowWidth) {
+		foreach(x; 0..renderWidth) {
+		//for(int x = 0; x < renderWidth; x++) {
+			// if pixel is not within the window width, skip iteration
+			if(x + offsetX < 0 || x + offsetX > width) {
 				continue;
 			}
 
-			for(int y = 0; y < renderHeight; y++) {
-				// if pixel is not within the window dimensions, skip the iteration
-				if(y + offsetY < 0 || y + offsetY > windowHeight) {
+			foreach(y; 0..renderHeight) {
+			//for(int y = 0; y < renderHeight; y++) {
+				// if pixel is not within the window height, skip iteration
+				if(y + offsetY < 0 || y + offsetY > height) {
 					continue;
 				}
 
@@ -116,25 +128,27 @@ void main() {
 					}
 				}
 
-				DrawPixel(x + offsetX, y + offsetY, calc_color((n == iterSlider ? 0 : map(n, 0, iterSlider, 0, 255)).to!int));
+				DrawPixel(x + offsetX, y + offsetY, calculateColor((n == iterSlider ? 0 : map(n, 0, iterSlider, 0, 255)).to!int));
 			}
 		}
 
+		// draw text
+		DrawText(("boundMinSlider:  " ~ boundMinSlider.to!string).toStringz, 10, 60, 21, Colors.WHITE);
+		DrawText(("boundMaxSlider:  " ~ boundMaxSlider.to!string).toStringz, 10, 90, 21, Colors.WHITE);
+		DrawText(("iterSlider: " ~ iterSlider.to!string).toStringz, 10, 120, 21, Colors.WHITE);
+
 		DrawFPS(10, 10);
-		{
-			DrawText(("boundMinSlider:  " ~ boundMinSlider.to!string).toStringz, 10, 60, 21, Colors.WHITE);
-			DrawText(("boundMaxSlider:  " ~ boundMaxSlider.to!string).toStringz, 10, 90, 21, Colors.WHITE);
-			DrawText(("iterSlider: " ~ iterSlider.to!string).toStringz, 10, 120, 21, Colors.WHITE);
-		}
 		EndDrawing();
 	}
 }
 
-double map(const double x, const double xRangeMin, const double xRangeMax, const double outRangeMin, const double outRangeMax) {
-	return ((x - xRangeMin) * (outRangeMax - outRangeMin) / (xRangeMax - xRangeMin) + outRangeMin);
+// mapping values between [min, max]
+double map(const double x, const double xMin, const double xMax, const double outMin, const double outMax) {
+	return ((x - xMin) * (outMax - outMin) / (xMax - xMin) + outMin);
 }
 
-Color calc_color(const int seed) {
+// calculating color given seed
+Color calculateColor(const int seed) {
 	return Color(
 		map(sqrt(seed), 0, sqrt(255), 0, 255).to!ubyte,
 		map(seed*seed, 0, 255*255, 0, 255).to!ubyte,
