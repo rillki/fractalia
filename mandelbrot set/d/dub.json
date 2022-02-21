@@ -49,5 +49,5 @@
 	],
 	"description": "D/Raylib minimal setup",
 	"license": "MIT",
-	"name": "d-raylib-project-template"
+	"name": "mandelbrot"
 }

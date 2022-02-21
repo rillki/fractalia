@@ -3,7 +3,7 @@ module app;
 import raylib;
 import std.conv: to;
 import std.string: toStringz;
-import std.complex: complex, Complex;
+import std.complex: complex;
 import core.stdc.math: fabs, sqrt;
 
 // window
@@ -128,7 +128,8 @@ void main() {
 					}
 				}
 
-				DrawPixel(x + offsetX, y + offsetY, calculateColor((n == iterSlider ? 0 : map(n, 0, iterSlider, 0, 255)).to!int));
+				int seed = (n == iterSlider) ? (0) : (map(n, 0, iterSlider, 0, 255).to!int);
+				DrawPixel(x + offsetX, y + offsetY, calculateColor(seed));
 			}
 		}
 
@@ -150,9 +151,9 @@ double map(const double x, const double xMin, const double xMax, const double ou
 // calculating color given seed
 Color calculateColor(const int seed) {
 	return Color(
-		map(sqrt(seed), 0, sqrt(255), 0, 255).to!ubyte,
-		map(seed*seed, 0, 255*255, 0, 255).to!ubyte,
-		map(seed*0.5, 0, 255*0.5, 0, 255).to!ubyte,
+		cast(ubyte)(map(sqrt(seed), 0, sqrt(255), 0, 255)),
+		cast(ubyte)(map(seed*seed, 0, 255*255, 0, 255)),
+		cast(ubyte)(map(seed*0.5, 0, 255*0.5, 0, 255)),
 		255
 	);
 }
