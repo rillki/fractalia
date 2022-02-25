@@ -2,11 +2,18 @@
 	"authors": [
 		"rillki"
 	],
+	"copyright": "Copyright © 2021, rillki",
+	"targetPath": "bin",
+	"dependencies": {
+		"raylib-d": "~>3.1.0"
+	},
 	"configurations": [
 		{
 			"name": "osx-app",
-			"platforms": [
-				"osx"
+			"platforms": ["osx"],
+			"targetType": "executable",
+			"libs": [
+				"raylib"
 			],
 			"lflags": [
 				"-framework",
@@ -14,22 +21,13 @@
 				"-framework",
 				"Cocoa",
 				"-framework",
-				"OpenGL",
-				"-framework",
-				"GLUT",
-				"-framework",
-				"CoreVideo"
+				"OpenGL"
 			],
-			"libs": [
-				"raylib"
-			],
-			"targetType": "executable"
 		},
 		{
 			"name": "linux-app",
-			"platforms": [
-				"linux"
-			],
+			"platforms": ["linux"],
+			"targetType": "executable",
 			"libs": [
 				"raylib",
 				"GL",
@@ -39,25 +37,17 @@
 				"rt",
 				"X11"
 			],
-			"targetType": "executable"
 		},
 		{
 			"name": "windows-app",
-			"platforms": [
-				"windows"
-			],
+			"platforms": ["windows"],
+			"targetType": "executable",
 			"libs": [
 				"raylibdll"
 			],
-			"targetType": "executable"
-		}
+		},
 	],
-	"copyright": "Copyright © 2021, rillki",
-	"dependencies": {
-		"raylib-d": "~>4.0.1"
-	},
 	"description": "D/Raylib minimal setup",
 	"license": "MIT",
-	"name": "mandelbrot",
-	"targetPath": "bin"
+	"name": "mandelbrot"
 }
