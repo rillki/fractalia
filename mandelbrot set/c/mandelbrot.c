@@ -3,8 +3,8 @@
 
 // window
 #define FPS 60
-#define WIDTH 720
-#define HEIGHT 640
+#define WIDTH 1080
+#define HEIGHT 720
 
 // mandelbrot set range
 #define mMIN -2
@@ -18,21 +18,21 @@ double map_to(const double x, const double xMin, const double xMax, const double
 Color calc_color(const int brightness);
 
 int main(void) {
-	// window init
-	InitWindow(WIDTH, HEIGHT, "Mandelbrot");
-	SetTargetFPS(FPS);
+    // window init
+    InitWindow(WIDTH, HEIGHT, "Mandelbrot");
+    SetTargetFPS(FPS);
 
-	// main loop
-	while(!WindowShouldClose()) {
-		// process events
-        // update
-		// render
-		BeginDrawing();
-		ClearBackground(BLACK);
+    // main loop
+    while(!WindowShouldClose()) {
+	// process events
+	// update
+	// render
+	BeginDrawing();
+	ClearBackground(BLACK);
 
-        for(int i = 0; i < WIDTH; i++) {
-            for(int j = 0; j < HEIGHT; j++) {
-                // f(z_0 = 0)
+	for(int i = 0; i < WIDTH; i++) {
+	    for(int j = 0; j < HEIGHT; j++) {
+		// f(z_0 = 0)
                 complex_t z = (complex_t) {
                     map_to(i, 0, WIDTH, mMIN, mMAX),
                     map_to(j, 0, HEIGHT, mMIN, mMAX)
@@ -72,8 +72,8 @@ int main(void) {
             }
         }
 
-		DrawFPS(10, 10);
-		EndDrawing();
+	    DrawFPS(10, 10);
+	    EndDrawing();
 	}
 
     return 0;
@@ -87,8 +87,8 @@ double map_to(const double x, const double xMin, const double xMax, const double
 Color calc_color(const int brightness) {
     return (Color) {
         map_to(sqrt(brightness), 0, sqrt(255), 0, 255),
-        map_to(brightness * brightness, 0, 255 * 255, 0, 255),
-        map_to(log(brightness), 0, log(255), 0, 255),
+        map_to(brightness * brightness + 100, 0, 255 * 255 + 100, 0, 255),
+        map_to(sqrt(log(brightness)), 0, sqrt(log(255)), 0, 255),
         255
     };
 }
