@@ -22,7 +22,7 @@ void main() {
 
 	// draw
 	BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(Colors.RAYWHITE);
 
 	kochCurve(Vector2(10, screenHeight/2), Vector2(screenWidth-10, screenHeight/2), 6);
 
@@ -56,10 +56,10 @@ void kochCurve(Vector2 p0, Vector2 p1, int limit) {
 	Vector2 b = Vector2(a.x + cos(angle)*length, a.y + sin(angle)*length);
 
 	if(limit < 1) {
-		DrawLineEx(p0, a, 1.5, BLACK);
-		DrawLineEx(a, b, 1.5, BLACK);
-		DrawLineEx(b, c, 1.5, BLACK);
-		DrawLineEx(c, p1, 1.5, BLACK);
+		DrawLineEx(p0, a, 1.5, Colors.BLACK);
+		DrawLineEx(a, b, 1.5, Colors.BLACK);
+		DrawLineEx(b, c, 1.5, Colors.BLACK);
+		DrawLineEx(c, p1, 1.5, Colors.BLACK);
 
 		return;
 	}

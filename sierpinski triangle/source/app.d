@@ -17,7 +17,7 @@ void main() {
 
 		// draw
 		BeginDrawing();
-        ClearBackground(RAYWHITE);
+        ClearBackground(Colors.RAYWHITE);
 
         //sierpinskiTriangleAnimation(Vector2(screenWidth/2, 0), Vector2(0, screenHeight), Vector2(screenWidth, screenHeight), limit);
         sierpinskiTriangle(Vector2(screenWidth/2, 0), Vector2(0, screenHeight), Vector2(screenWidth, screenHeight), 6);
@@ -41,7 +41,7 @@ void sierpinskiTriangleAnimation(Vector2 p0, Vector2 p1, Vector2 p2, ref int lim
 void sierpinskiTriangle(Vector2 p0, Vector2 p1, Vector2 p2, int limit) {
 	// when the limit of iterations is <= 0, draw the triangle using current points
 	if(limit-- <= 0) {
-		DrawTriangle(p0, p1, p2, BLACK);
+		DrawTriangle(p0, p1, p2, Colors.BLACK);
 		return;
 	}
 

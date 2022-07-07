@@ -32,7 +32,7 @@ struct Camera {
 void dragonCurve(float x, float y, float length, float angle, int limit) {
 	// if limit is <= 0, draw the line to the screen
 	if(limit <= 0) {
-		DrawLineEx(Vector2(x, y), Vector2(x+length*cos(angle), y+length*sin(angle)), 1, WHITE);
+		DrawLineEx(Vector2(x, y), Vector2(x+length*cos(angle), y+length*sin(angle)), 1, Colors.WHITE);
 		return;
 	}
 	
@@ -77,7 +77,7 @@ void main() {
 
         // render
         BeginDrawing();
-        ClearBackground(GRAY);
+        ClearBackground(Colors.GRAY);
 		
 	// draw the dragon curve
 	dragonCurve(camera.x, camera.y, camera.length, PI/2, 12);
