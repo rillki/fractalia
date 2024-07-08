@@ -2,60 +2,14 @@
 	"authors": [
 		"rillki"
 	],
-	"configurations": [
-		{
-			"name": "osx-app",
-			"platforms": [
-				"osx"
-			],
-			"lflags": [
-				"-framework",
-				"IOKit",
-				"-framework",
-				"Cocoa",
-				"-framework",
-				"OpenGL",
-				"-framework",
-				"GLUT",
-				"-framework",
-				"CoreVideo"
-			],
-			"libs": [
-				"raylib"
-			],
-			"targetType": "executable"
-		},
-		{
-			"name": "linux-app",
-			"platforms": [
-				"linux"
-			],
-			"libs": [
-				"raylib",
-				"GL",
-				"m",
-				"pthread",
-				"dl",
-				"rt",
-				"X11"
-			],
-			"targetType": "executable"
-		},
-		{
-			"name": "windows-app",
-			"platforms": [
-				"windows"
-			],
-			"libs": [
-				"raylibdll"
-			],
-			"targetType": "executable"
-		}
-	],
-	"copyright": "Copyright © 2021, rillki",
 	"dependencies": {
-		"raylib-d": "~>4.0.1"
+		"raylib-d": "~>5.0.1"
 	},
+	"libs": [ "raylib" ],
+	"lflags-posix" : ["-L."],
+	"lflags-osx" : ["-rpath", "@executable_path/"],
+	"lflags-linux" : ["-rpath=$$ORIGIN"],
+	"copyright": "Copyright © 2021, rillki",
 	"description": "D/Raylib minimal setup",
 	"license": "MIT",
 	"name": "mandelbrot",
